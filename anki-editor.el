@@ -140,6 +140,10 @@ It should contain `%s' as placeholder for the heading, see `format'."
 See `anki-editor-insert-note', whose behavior this controls."
   :type 'boolean)
 
+(defcustom anki-editor-insert-note-promote-note-heading nil
+  "Whether to demote the inserted heading."
+  :type 'boolean)
+
 (defcustom anki-editor-default-note-type "Basic"
   "Default note type when creating anki-editor notes in org."
   :type 'string)
@@ -710,6 +714,8 @@ DECK is only inserted if not already inherited. For PREFIX and more
 see `anki-editor-insert-note' which wraps this function."
   (org-insert-heading-respect-content)
   (insert heading)
+  (when anki-editor-insert-note-promote-note-heading
+    (org-promote))
   (org-set-property anki-editor-prop-note-type type)
   (unless (save-excursion
             (org-up-heading-safe)
